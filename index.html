@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>intrinsics</title>
+<link rel="stylesheet" href="badger-accordion.css">
+</head>
+<body style="">
+
+<div style="position:absolute; top:0em; left:0em; padding:1em;">
+Technologies<br>
+<label><input type="radio">Armv7-A/R</label><br>
+<label><input type="radio">Armv8-A/R (AArch32)</label><br>
+<label><input type="radio">Armv8-A (AArch64)</label><br>
+
+Categories<br>
+<label><input type="checkbox">Addition</label><br>
+<label><input type="checkbox">Multiplication</label><br>
+<label><input type="checkbox">Subtraction</label><br>
+<label><input type="checkbox">Comparison</label><br>
+<label><input type="checkbox">Absolute difference</label><br>
+<label><input type="checkbox">Max and Min</label><br>
+<label><input type="checkbox">Pairwise addition</label><br>
+<label><input type="checkbox">Folding maximum</label><br>
+<label><input type="checkbox">Folding minimum</label><br>
+<label><input type="checkbox">Reciprocal and Sqrt</label><br>
+<label><input type="checkbox">Shifts by signed variable</label><br>
+<label><input type="checkbox">Shifts by a constant</label><br>
+<label><input type="checkbox">Shifts with insert</label><br>
+<label><input type="checkbox">Load vector or lane of a vector</label><br>
+<label><input type="checkbox">Store vector or lane of a vector</label><br>
+<label><input type="checkbox">Load N-element structure</label><br>
+<label><input type="checkbox">Store N-element structure</label><br>
+<label><input type="checkbox">Combining vectors</label><br>
+<label><input type="checkbox">Splitting vectors</label><br>
+<label><input type="checkbox">Converting vectors</label><br>
+<label><input type="checkbox">Table look up</label><br>
+<label><input type="checkbox">Extended table look up</label><br>
+<label><input type="checkbox">Operations with a scalar</label><br>
+<label><input type="checkbox">Vector extract</label><br>
+<label><input type="checkbox">Reverse vector elements</label><br>
+<label><input type="checkbox">Other single operand arithmetic</label><br>
+<label><input type="checkbox">Logical operations</label><br>
+<label><input type="checkbox">Transposition operations</label><br>
+
+
+</div>
+
+<div id="hacker-list" style="position:absolute; top:0em; left:20em; padding:1em;">
+<!--
+  <input type="file" id="fileSelect" accept=".csv" /><br>
+-->
+  <input class="search" placeholder="Search" style="margin-top:1em; margin-bottom:1em;" />
+  <button class="sort" data-sort="name">
+    Sort by name
+  </button>
+  <div class="list js-badger-accordion"></div>
+</div>
+
+<div style="display:none;">
+  <!-- A template element is needed when list is empty, TODO: needs a better solution -->
+  <div id="hacker-item">
+    <div class="js-badger-accordion-header intrinsic"></div>
+    <div class="badger-accordion__panel js-badger-accordion-panel" style="padding-left:0.5em;">
+      <div class="js-badger-accordion-panel-inner">
+        <pre class="argument_preparation"></pre>
+        <pre class="a64_instruction"></pre>
+        <pre class="result"></pre>
+        <pre class="supported_architecture"></pre>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="list.min.js"></script>
+<script src="badger-accordion.min.js"></script>
+<script src="papaparse.min.js"></script>
+<script>
+
+/*
+
+fileSelect.onchange = function() {
+  Papa.parse(fileSelect.files[0], {
+    header: true,
+    complete: function(results) {
+      var options = {
+          valueNames: [ 'intrinsic', 'argument_preparation', 'a64_instruction', 'result', 'supported_architecture' ],
+          item: 'hacker-item'
+      };
+      var list = new List('hacker-list', options, results.data);
+      var accordion = new BadgerAccordion('.js-badger-accordion');
+    }
+  });
+}
+
+*/
+
+Papa.parse("ARM_NEON_intrinsics.csv", {
+  header: true,
+  download: true,
+  complete: function(results) {
+    var options = {
+        valueNames: [ 'intrinsic', 'argument_preparation', 'a64_instruction', 'result', 'supported_architecture' ],
+        item: 'hacker-item'
+    };
+    var list = new List('hacker-list', options, results.data);
+    var accordion = new BadgerAccordion('.js-badger-accordion');
+  }
+});
+
+</script>
+
+</body>
+</html>
