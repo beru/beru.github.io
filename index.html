@@ -5,6 +5,8 @@
 </head>
 <body style="">
 
+<!--
+
 <div style="position:absolute; top:0em; left:0em; padding:1em;">
 Technologies<br>
 <label><input type="radio">Armv7-A/R</label><br>
@@ -41,17 +43,15 @@ Categories<br>
 <label><input type="checkbox">Logical operations</label><br>
 <label><input type="checkbox">Transposition operations</label><br>
 
-
 </div>
 
-<div id="hacker-list" style="position:absolute; top:0em; left:20em; padding:1em;">
-<!--
-  <input type="file" id="fileSelect" accept=".csv" /><br>
+<input type="file" id="fileSelect" accept=".csv" /><br>
+
 -->
-  <input class="search" placeholder="Search" style="margin-top:1em; margin-bottom:1em;" />
-  <button class="sort" data-sort="name">
-    Sort by name
-  </button>
+
+<input id="search_input" class="search" placeholder="Search" style="position:fixed; top:2em; margin-top:1em; margin-bottom:1em;" /><br>
+
+<div id="hacker-list" style="position:absolute; top:0em; left:20em; padding:1em;">
   <div class="list js-badger-accordion"></div>
 </div>
 
@@ -76,17 +76,20 @@ Categories<br>
 <script src="papaparse.min.js"></script>
 <script>
 
+var options = {
+  valueNames: [ 'intrinsic', 'argument_preparation', 'a64_instruction', 'result', 'supported_architecture' ],
+  item: 'hacker-item',
+  indexAsync : true,
+};
+var listObj;
+
 /*
 
 fileSelect.onchange = function() {
   Papa.parse(fileSelect.files[0], {
     header: true,
     complete: function(results) {
-      var options = {
-          valueNames: [ 'intrinsic', 'argument_preparation', 'a64_instruction', 'result', 'supported_architecture' ],
-          item: 'hacker-item'
-      };
-      var list = new List('hacker-list', options, results.data);
+      listObj = new List('hacker-list', options, results.data);
       var accordion = new BadgerAccordion('.js-badger-accordion');
     }
   });
@@ -94,18 +97,22 @@ fileSelect.onchange = function() {
 
 */
 
+//*
+
 Papa.parse("ARM_NEON_intrinsics.csv", {
   header: true,
   download: true,
   complete: function(results) {
-    var options = {
-        valueNames: [ 'intrinsic', 'argument_preparation', 'a64_instruction', 'result', 'supported_architecture' ],
-        item: 'hacker-item'
-    };
-    var list = new List('hacker-list', options, results.data);
+    listObj = new List('hacker-list', options, results.data);
     var accordion = new BadgerAccordion('.js-badger-accordion');
   }
 });
+
+//*/
+
+search_input.onkeyup = function() {
+  listObj.search(search_input.value, ['intrinsic']);
+}
 
 </script>
 
